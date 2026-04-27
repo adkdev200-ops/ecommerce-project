@@ -30,7 +30,7 @@ const LoginSignup = () => {
           {action === "Sign Up" ? "Create Account" : "Login"}
         </button>
 
-        {/* TOGGLE TEXT */}
+      
         {action === "Sign Up" ? (
           <p className="loginsignup-login">
             Already have an account?{" "}
@@ -43,7 +43,7 @@ const LoginSignup = () => {
           </p>
         )}
 
-        {/* AGREEMENT only for signup */}
+        
         {action === "Sign Up" && (
           <div className='loginsignup-agree'>
             <input type='checkbox' />

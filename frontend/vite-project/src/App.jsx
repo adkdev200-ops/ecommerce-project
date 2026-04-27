@@ -1,5 +1,5 @@
 import Navbar from "./components/Navbar/Navbar";
-import LoginSignup from "./Pages/LoginSignup"
+import LoginSignup from "./pages/LoginSignup"
 import { Routes, Route } from "react-router-dom";
 function App(){
     return (
