@@ -1,12 +1,14 @@
+import API from "../utils/api";
 import React, { useState } from 'react'
-import axios from "axios"
+
+import { useNavigate } from "react-router-dom"
 import "../CSS/LoginSignup.css"
 
 const LoginSignup = () => {
 
   const [action, setAction] = useState("Sign Up");
+  const navigate = useNavigate();
 
-  
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -15,7 +17,6 @@ const LoginSignup = () => {
     password: ""
   });
 
-  
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -26,10 +27,12 @@ const LoginSignup = () => {
   const handleSubmit = async () => {
     try {
 
+      // ✅ FIXED endpoints
       const url =
         action === "Sign Up"
           ? "/api/signup/"
-          : "/api/login/";
+          : "/api/token/";   
+
 
       const data =
         action === "Sign Up"
@@ -41,24 +44,32 @@ const LoginSignup = () => {
               password: formData.password
             }
           : {
-              email: formData.email,
+              phone_number: formData.phone,
               password: formData.password
             };
 
-      const response = await axios.post(
+      const response = await API.post(
         "http://127.0.0.1:8000" + url,
         data
       );
 
-      console.log("Response:", "user created successfully");
+      console.log("Response:", response.data);
 
-      const token = response.data.token || response.data.accessToken;
+      
+      if (action === "Login") {
+        const access = response.data.access;
+        const refresh = response.data.refresh;
 
-      if (token) {
-        localStorage.setItem("token", token);
+        if (access && refresh) {
+          localStorage.setItem("accessToken", access);
+          localStorage.setItem("refreshToken", refresh);
+
+          // 
+          navigate("/dashboard");
+        }
       }
 
-      alert("Success!");
+      alert(`${action} Successful!`);
 
     } catch (error) {
       console.log("Error:", error.response?.data || error.message);
@@ -74,27 +85,23 @@ const LoginSignup = () => {
 
         <div className='loginsignup-fields'>
 
-          {/* Signup fields */}
           {action === "Sign Up" && (
             <>
               <input name="firstName" type='text' placeholder='First Name' onChange={handleChange}/>
               <input name="lastName" type='text' placeholder='Last Name' onChange={handleChange}/>
-              <input name="phone" type="number" placeholder='Phone No.' onChange={handleChange}/>
+              <input name="email" type="email" placeholder='Email Address.' onChange={handleChange}/>
             </>
           )}
 
-          
-          <input name="email" type='email' placeholder='Email Address' onChange={handleChange}/>
+          <input name="phone" type='number' placeholder='Phone No.' onChange={handleChange}/>
           <input name="password" type='password' placeholder='Password' onChange={handleChange}/>
 
         </div>
 
-      
         <button onClick={handleSubmit}>
           {action === "Sign Up" ? "Create Account" : "Login"}
         </button>
 
-        
         {action === "Sign Up" ? (
           <p className="loginsignup-login">
             Already have an account?{" "}
@@ -107,7 +114,6 @@ const LoginSignup = () => {
           </p>
         )}
 
-        
         {action === "Sign Up" && (
           <div className='loginsignup-agree'>
             <input type='checkbox' />
@@ -120,4 +126,4 @@ const LoginSignup = () => {
   )
 }
 
-export default LoginSignup
+export default LoginSignup;
