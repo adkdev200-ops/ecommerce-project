@@ -1,9 +1,70 @@
 import React, { useState } from 'react'
+import axios from "axios"
 import "../CSS/LoginSignup.css"
 
 const LoginSignup = () => {
 
   const [action, setAction] = useState("Sign Up");
+
+  
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    phone: "",
+    email: "",
+    password: ""
+  });
+
+  
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+  };
+
+  const handleSubmit = async () => {
+    try {
+
+      const url =
+        action === "Sign Up"
+          ? "/api/signup/"
+          : "/api/login/";
+
+      const data =
+        action === "Sign Up"
+          ? {
+              first_name: formData.firstName,
+              last_name: formData.lastName,
+              phone_number: formData.phone,
+              email: formData.email,
+              password: formData.password
+            }
+          : {
+              email: formData.email,
+              password: formData.password
+            };
+
+      const response = await axios.post(
+        "http://127.0.0.1:8000" + url,
+        data
+      );
+
+      console.log("Response:", "user created successfully");
+
+      const token = response.data.token || response.data.accessToken;
+
+      if (token) {
+        localStorage.setItem("token", token);
+      }
+
+      alert("Success!");
+
+    } catch (error) {
+      console.log("Error:", error.response?.data || error.message);
+      alert("Error occurred");
+    }
+  };
 
   return (
     <div className='loginsignup'>
@@ -13,24 +74,27 @@ const LoginSignup = () => {
 
         <div className='loginsignup-fields'>
 
+          {/* Signup fields */}
           {action === "Sign Up" && (
             <>
-              <input type='text' placeholder='First Name' />
-              <input type='text' placeholder='Last Name' />
-              <input type="number" placeholder='Phone No.' />
+              <input name="firstName" type='text' placeholder='First Name' onChange={handleChange}/>
+              <input name="lastName" type='text' placeholder='Last Name' onChange={handleChange}/>
+              <input name="phone" type="number" placeholder='Phone No.' onChange={handleChange}/>
             </>
           )}
 
-          <input type='email' placeholder='Email Address' />
-          <input type='password' placeholder='Password' />
+          
+          <input name="email" type='email' placeholder='Email Address' onChange={handleChange}/>
+          <input name="password" type='password' placeholder='Password' onChange={handleChange}/>
 
         </div>
 
-        <button>
+      
+        <button onClick={handleSubmit}>
           {action === "Sign Up" ? "Create Account" : "Login"}
         </button>
 
-      
+        
         {action === "Sign Up" ? (
           <p className="loginsignup-login">
             Already have an account?{" "}
