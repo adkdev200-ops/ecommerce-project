@@ -1,13 +1,16 @@
 import API from "../utils/api";
-import React, { useState } from 'react'
-
-import { useNavigate } from "react-router-dom"
-import "../CSS/LoginSignup.css"
+import React, { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext";
+import "../CSS/LoginSignup.css";
 
 const LoginSignup = () => {
 
   const [action, setAction] = useState("Sign Up");
   const navigate = useNavigate();
+
+  
+  const { login } = useContext(AuthContext);
 
   const [formData, setFormData] = useState({
     firstName: "",
@@ -27,12 +30,10 @@ const LoginSignup = () => {
   const handleSubmit = async () => {
     try {
 
-      // ✅ FIXED endpoints
       const url =
         action === "Sign Up"
           ? "/api/signup/"
-          : "/api/token/";   
-
+          : "/api/token/";
 
       const data =
         action === "Sign Up"
@@ -48,24 +49,24 @@ const LoginSignup = () => {
               password: formData.password
             };
 
-      const response = await API.post(
-        "http://127.0.0.1:8000" + url,
-        data
-      );
+      
+      const response = await API.post(url, data);
 
       console.log("Response:", response.data);
 
-      
+      // =========================
+  
+      // =========================
       if (action === "Login") {
         const access = response.data.access;
         const refresh = response.data.refresh;
 
         if (access && refresh) {
-          localStorage.setItem("accessToken", access);
-          localStorage.setItem("refreshToken", refresh);
+        
+          login(access, refresh);
 
-          // 
-          navigate("/dashboard");
+          
+          navigate("/");
         }
       }
 
@@ -89,7 +90,7 @@ const LoginSignup = () => {
             <>
               <input name="firstName" type='text' placeholder='First Name' onChange={handleChange}/>
               <input name="lastName" type='text' placeholder='Last Name' onChange={handleChange}/>
-              <input name="email" type="email" placeholder='Email Address.' onChange={handleChange}/>
+              <input name="email" type="email" placeholder='Email Address' onChange={handleChange}/>
             </>
           )}
 
@@ -123,7 +124,7 @@ const LoginSignup = () => {
 
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default LoginSignup;
