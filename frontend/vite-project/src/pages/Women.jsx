@@ -1,18 +1,40 @@
+import { useEffect, useState } from "react";
+import API from "../utils/api";
 import ProductCard from "../components/ProductCard";
-import saari from "../assets/saari.jpg";
+import "../CSS/Women.css"
+
 const Women = () => {
 
-  const product = {
-    id: 1,
-    name: "Yellow Saari",
-    price: 1500,
-    image: saari
-  };
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const res = await API.get("/api/products/");
+        
+        
+        const womenProducts = res.data.filter(
+          (item) => item.category === "female"
+        );
+
+        setProducts(womenProducts);
+
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchProducts();
+  }, []);
 
   return (
-    <div>
-      
-      <ProductCard product={product} />
+    <div className="women-container">
+      <h1>Women Collections</h1>
+      <div className="women-grid">
+        {products.map((item) => (
+        <ProductCard key={item.id} product={item} />
+      ))}
+      </div>
     </div>
   );
 };

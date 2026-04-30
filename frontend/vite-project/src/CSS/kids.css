@@ -1,0 +1,15 @@
+.kid-container {
+  padding: 20px;
+}
+
+
+.kid-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+
+.kid-container h1 {
+  margin-bottom: 20px;
+}
