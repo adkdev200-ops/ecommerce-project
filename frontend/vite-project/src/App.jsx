@@ -40,7 +40,7 @@ function App() {
         />
 
         <Route
-          path="/men"
+          path="/mens"
           element={
             <ProtectedRoute>
               <Men />
@@ -49,7 +49,7 @@ function App() {
         />
 
         <Route
-          path="/women"
+          path="/womens"
           element={
             <ProtectedRoute>
               <Women />

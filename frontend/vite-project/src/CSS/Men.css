@@ -1,0 +1,15 @@
+.men-container {
+  padding: 20px;
+}
+
+
+.men-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+
+.men-container h1 {
+  margin-bottom: 20px;
+}
