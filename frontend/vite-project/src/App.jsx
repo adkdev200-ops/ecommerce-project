@@ -9,6 +9,7 @@ import Navbar from "./components/Navbar/Navbar";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { useContext } from "react";
 import { AuthContext } from "./context/AuthContext";
+import AddProduct from "./pages/AddProduct";
 
 function App() {
 
@@ -66,7 +67,9 @@ function App() {
             </ProtectedRoute>
           }
         />
+     
 
+<Route path="/add-product" element={<AddProduct />} />
        
 
       </Routes>

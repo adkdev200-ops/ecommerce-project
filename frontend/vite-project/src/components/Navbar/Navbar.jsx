@@ -45,6 +45,9 @@ const Navbar = () => {
           <Link to="/kids">Kids</Link>
           {menu==="kids" && <hr/>}
         </li>
+        <li>
+  <Link to="/add-product">Add Product</Link>
+</li>
       </ul>
 
       <div className="nav-login-cart">
