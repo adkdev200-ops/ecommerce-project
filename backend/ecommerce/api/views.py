@@ -22,3 +22,8 @@ class ProductUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
     queryset = Products.objects.all()
     serializer_class = ProductSerializer
     lookup_field = 'pk'
+
+class UserData(generics.RetrieveUpdateDestroyAPIView):
+    queryset = CustomUser.objects.all()
+    serializer_class = SignupSerializer
+    lookup_field = 'pk'

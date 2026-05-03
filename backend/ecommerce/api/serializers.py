@@ -11,6 +11,7 @@ class SignupSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
         fields = [
+            'id',   
             "phone_number",
             "email",
             "first_name",
@@ -25,7 +26,8 @@ class SignupSerializer(serializers.ModelSerializer):
             email=validated_data["email"],
             first_name=validated_data["first_name"],
             last_name=validated_data["last_name"],
-            password=validated_data["password"]
+            password=validated_data["password"],
+            role = validated_data['role']
         )
         return user
     
