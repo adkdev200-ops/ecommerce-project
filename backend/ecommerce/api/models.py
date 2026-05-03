@@ -4,7 +4,12 @@ from .manager import UserManager
 
 class CustomUser(AbstractUser):
     username = None
+    role_choice = {
+        'buyer'  : 'buyer',
+        'seller' : 'seller'
+    }
     phone_number = models.CharField(max_length=10, unique= True)
+    role = models.CharField(choices=role_choice, default= 'buyer')
 
     USERNAME_FIELD  = 'phone_number'
     objects = UserManager()
